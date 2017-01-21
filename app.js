@@ -22,7 +22,8 @@ app.get('/', function(request, response) {
 
     var urlObject = url.parse(request.url,true).query
     console.log(urlObject)
-    sendMessage(urlObject);
+    sendMessage(urlObject)
+    getLocation(urlObject);
 
 }); //app.get
 
@@ -49,7 +50,7 @@ function sendMessage(urlObject){
     });
 }
 
-function getWeather(urlObject){
+function getLocation(urlObject){
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
 
@@ -58,12 +59,12 @@ function getWeather(urlObject){
 
     slack.webhook({
         channel: urlObject.channel_name,
-        if (userText === "My Weather"){
+        if (userText == "My Location"){
         // the response back to slack
-        text: "Would you like to see the weather? It is sunny and 75 Degrees"
+        text: "Your location is XYZ"
 
     } else {
-            text: "To see your weather please type 'My Weather' "
+            text: "To see your location please type 'My Location' "
     };
 
 
