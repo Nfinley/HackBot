@@ -2,7 +2,7 @@ var Slack = require('slack-node');
 var express = require('express');
 var url = require('url');
 var app = express();
-var weather = require('weather');
+// var weather = require('weather');
 
 // weather({location: 'Melbourne'}, function(data) {
 //     if (data.temp > 30) {
@@ -10,7 +10,7 @@ var weather = require('weather');
 //     }
 // });
 
-
+// TODO: Add Weather and Location
 
 ////////////// THE SETUP ///////////////////////////////////////////
 
@@ -22,12 +22,12 @@ app.get('/', function(request, response) {
 
     var urlObject = url.parse(request.url,true).query
     console.log(urlObject)
-    sendMessage(urlObject)
-    getLocation(urlObject);
+    sendMessage(urlObject);
 
-}); //app.get
 
-// TODO: Add Weather and Location
+});
+
+
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
 //===============Original FUNCTION ===========
 function sendMessage(urlObject){
@@ -50,30 +50,30 @@ function sendMessage(urlObject){
     });
 }
 
-function getLocation(urlObject){
-    slack = new Slack();
-    slack.setWebhook(urlObject.response_url);
-
-    //   /mySlashCommand catfish    'catfish' is stored in var userCommand
-    var userText = urlObject.text;
-
-    slack.webhook({
-        channel: urlObject.channel_name,
-        if (userText == "My Location"){
-        // the response back to slack
-        text: "Your location is XYZ"
-
-    } else {
-            text: "To see your location please type 'My Location' "
-    };
-
-
-    }, function(err, response) {
-        if (err){
-            console.log(err)
-        }
-    });
-
-}
+// function getLocation(urlObject){
+//     slack = new Slack();
+//     slack.setWebhook(urlObject.response_url);
+//
+//     //   /mySlashCommand catfish    'catfish' is stored in var userCommand
+//     var userText = urlObject.text;
+//
+//     slack.webhook({
+//         channel: urlObject.channel_name,
+//         if (userText == "My Location"){
+//         // the response back to slack
+//         text: "Your location is XYZ"
+//
+//     } else {
+//             text: "To see your location please type 'My Location' "
+//     };
+//
+//
+//     }, function(err, response) {
+//         if (err){
+//             console.log(err)
+//         }
+//     });
+//
+// }
 
 /////////////////////////////////////////////////////////
