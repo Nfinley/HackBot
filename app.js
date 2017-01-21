@@ -23,32 +23,32 @@ app.get('/', function (request, response) {
     var urlObject = url.parse(request.url, true).query
     console.log(urlObject);
     console.log(urlObject);
-    var weather = getWeather();
-    sendMessage(weather);
+    getWeather();
+    // sendMessage(weather);
 
 
 });
 
 function getWeather() {
     weather({location: 'Austin'}, function (data) {
-        return data;
+        sendMessage(data);
     });
 }
 
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
 //===============Original FUNCTION ===========
-function sendMessage(urlObject) {
+function sendMessage(data) {
 
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
-    getLocation();
+
     //   /mySlashCommand catfish    'catfish' is stored in var userCommand
     var userText = urlObject.text;
 
     slack.webhook({
         channel: urlObject.channel_name,
 
-        text: "you typed: " + userText                  // the response back to slack
+        text: data                 // the response back to slack
     }, function (err, response) {
         if (err) {
             console.log(err)
@@ -56,11 +56,11 @@ function sendMessage(urlObject) {
     });
 }
 
-function getLocation() {
-    if (userText === "My Location") {
-        text: "Your location is XYZ";
-    }
-}
+// function getLocation() {
+//     if (userText === "My Location") {
+//         text: "Your location is XYZ";
+//     }
+// }
 // function getLocation(urlObject){
 //     slack = new Slack();
 //     slack.setWebhook(urlObject.response_url);
