@@ -25,55 +25,40 @@ app.get('/', function (request, response) {
 });
 
 
+function testWeather(urlObject) {
+    weather.find({search: 'Austin, TX', degreeType: 'F'}, function (err, result) {
+        if(err) console.log(err);
+        console.log(result);
+        console.log(result[0].location.name);
+        var locationName = result[0].location.name;
+        sendMessage(urlObject, locationName);
+    });
+}
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
 // ===============Original FUNCTION ===========
-// function sendMessage(urlObject, data) {
-//
-//     slack = new Slack();
-//     slack.setWebhook(urlObject.response_url);
-//
-//     //This splits up the user input so you can handle multiple words
-//     var userText = urlObject.text.split(" ");
-//     //This will be the command to direct what the output will be
-//     var userCommand = userText[0];
-//     //This will be the second user command and will be the input that is evaluated
-//     var userInput = userText[1];
+function sendMessage(urlObject, data) {
 
-
-//
-//     slack.webhook({
-//         channel: urlObject.channel_name,
-//
-//         text: "You typed: " + userText + "And your location is: " +  data              // the response back to slack
-//     }, function (err, response) {
-//         if (err) {
-//             console.log(err)
-//         }
-//     });
-// }
-
-
-/////////////////////////////////////////////////////////
-// MIKE MULCH APP ===========
-
-
-function testWeather(urlObject) {
-weather.find({search: 'Austin, TX', degreeType: 'F'}, function (err, result) {
-    if(err) console.log(err);
-    console.log(result);
-    console.log(result[0].location.name);
-    var locationName = result[0].location.name;
-    sendMessage(urlObject, locationName);
-});
-}
-/////////////// THE SEND MESSAGE //////////////////////////////////////////
-function sendMessage(urlObject, locationName) {
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
+
+    //This splits up the user input so you can handle multiple words
+    var userText = urlObject.text.split(" ");
+    // //This will be the command to direct what the output will be
+    // var userCommand = userText[0];
+    // //This will be the second user command and will be the input that is evaluated
+    // var userInput = userText[1];
+
+
+    slack.webhook({
+        channel: urlObject.channel_name,
+
+        text: "You typed: " + userText + "And your location is: " +  data              // the response back to slack
+    }, function (err, response) {
+        if (err) {
+            console.log(err)
+        }
+    });
 }
-//
-
-
 
 
 
