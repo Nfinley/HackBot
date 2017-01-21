@@ -1,4 +1,4 @@
-    var Slack = require('slack-node');
+var Slack = require('slack-node');
 var express = require('express');
 var url = require('url');
 var app = express();
@@ -32,7 +32,7 @@ function sendMessage(urlObject){
     slack.webhook({
      channel: urlObject.channel_name,
 
-      text: "hi there, your fingers typed: " + userText                  // the response back to slack
+      text: "hi there, your fingers typed: " + userText  + userText.length                 // the response back to slack
 
     }, function(err, response) {
         if (err){
