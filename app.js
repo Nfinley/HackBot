@@ -23,21 +23,23 @@ app.get('/', function (request, response) {
     var urlObject = url.parse(request.url, true).query
     console.log(urlObject);
     console.log(urlObject);
-    getWeather();
+    getWeather(urlObject);
+    sendMessage(urlObject);
+
     // sendMessage(weather);
 
 
 });
 
-function getWeather() {
+function getWeather(urlObject) {
     weather({location: 'Austin'}, function (data) {
-        sendMessage(data);
+        sendMessage(urlObject, data);
     });
 }
 
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
 //===============Original FUNCTION ===========
-function sendMessage(data) {
+function sendMessage(urlObject, data) {
 
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
