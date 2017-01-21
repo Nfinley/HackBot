@@ -67,9 +67,10 @@ weather.find({search: 'Austin, TX', degreeType: 'F'}, function (err, result) {
 });
 }
 /////////////// THE SEND MESSAGE //////////////////////////////////////////
-function sendMessage(urlObject, locationName){
+function sendMessage(urlObject, locationName) {
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
+}
 //
 
 
