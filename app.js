@@ -2,8 +2,9 @@ var Slack = require('slack-node');
 var express = require('express');
 var url = require('url');
 var app = express();
-var weather = require('weather-js');
+// var weather = require('weather-js');
 var axios = require('axios');
+var unirest = require('unirest');
 
 
 // TODO: Create bot that uses omdb to look up a movie
@@ -46,7 +47,7 @@ function sendMessage(urlObject) {
             slack.webhook({
                 channel: urlObject.channel_name,
 
-                text: "You can type the following commands:\n `movie` and your `MOVIENAME` and this will return your movie information\n or `quote` and then a `genre` and it will return a quote"
+                text: "You can type the following commands:\n 1. `movie` and your `MOVIENAME` like `/nigel movie sandlot` and this will return your movie information\n or; 2. `quote` and then a `genre` like `/nigel quote movies` and it will return a quote"
             }, function (err, response) {
                 if (err) {
                     console.log(err)
@@ -55,6 +56,8 @@ function sendMessage(urlObject) {
             break;
         // case "movie":
         //     //use axios to perform a movie search on the omdb database
+        //
+        //     axios.get
         //     slack.webhook({
         //         channel: urlObject.channel_name,
         //
@@ -65,10 +68,34 @@ function sendMessage(urlObject) {
         //         }
         //     });
         //     break;
-        // case "quote"
-        //     break;
+        case "quote":
+
+
+            // These code snippets use an open-source library. http://unirest.io/nodejs
+            unirest.post("https://andruxnet-random-famous-quotes.p.mashape.com/?cat="+userInput)
+                .header("X-Mashape-Key", "pDAmhnhyqrmshud5Z7fQ0MxQcWy3p1iEYQYjsnnyqHx50eTQdx")
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .header("Accept", "application/json")
+                .end(function (result) {
+                    console.log(result.status, result.headers, result.body);
+                    responseText = result.body;
+                    slack.webhook({
+                        channel: urlObject.channel_name,
+
+                        text: responseText
+                    }, function (err, response) {
+                        if (err) {
+                            console.log(err)
+                        }
+                    });
+
+                });
+
+
+
+            break;
         default:
-            responseText = "Sorry unrecognized command, type `/nigel help` for a list of commands"
+            responseText = "Sorry unrecognized command, type `/nigel help` for a list of possible commands"
     }
 
     slack.webhook({

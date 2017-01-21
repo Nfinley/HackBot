@@ -10,6 +10,7 @@
     "express": "^4.14.0",
     "request": "^2.79.0",
     "slack-node": "^0.1.8",
+    "unirest": "^0.5.1",
     "weather": "^0.1.0",
     "weather-js": "^1.0.2"
   },
