@@ -31,12 +31,13 @@ function testWeather(urlObject) {
         console.log(result);
         console.log(result[0].location.name);
         var locationName = result[0].location.name;
-        sendMessage(urlObject, locationName);
+        var temp = result[0].location.current.temperature;
+        sendMessage(urlObject, locationName, temp);
     });
 }
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
 // ===============Original FUNCTION ===========
-function sendMessage(urlObject, data) {
+function sendMessage(urlObject, data, temp) {
 
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
@@ -52,7 +53,7 @@ function sendMessage(urlObject, data) {
     slack.webhook({
         channel: urlObject.channel_name,
 
-        text: "You typed: " + userText + "And your location is: " +  data              // the response back to slack
+        text: "You typed: " + userText + "And your location is: " +  data  + "and it is currently " + temp + " degrees"            // the response back to slack
     }, function (err, response) {
         if (err) {
             console.log(err)
