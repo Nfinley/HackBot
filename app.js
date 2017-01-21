@@ -58,21 +58,23 @@ function sendMessage(urlObject) {
             break;
         case "movie":
             //use axios to perform a movie search on the imdb database
-            var queryURL = "http://imdb.wemakesites.net/api/search?q="+userInput+"&api_key=909eddb2-f52d-475e-892c-4020a43d002e";
-            axios.get(queryURL).then(function (response) {
-                slack.webhook({
-                    channel: urlObject.channel_name,
-
-                    text: response.term
-                }, function (err, response) {
-                    if (err) {
-                        console.log(err)
-                    }
-                });
-
-            })
-
-            break;
+            // var queryURL = "http://imdb.wemakesites.net/api/search?q="+userInput+"&api_key=909eddb2-f52d-475e-892c-4020a43d002e";
+            // axios.get(queryURL).then(function (response) {
+            //     console.log(response.body);
+            //     responseText = "Your Movie title is: " + response.term;
+            //     slack.webhook({
+            //         channel: urlObject.channel_name,
+            //
+            //         text: response.term
+            //     }, function (err, response) {
+            //         if (err) {
+            //             console.log(err)
+            //         }
+            //     });
+            //
+            // })
+            //
+            // break;
         case "quote":
 
 
