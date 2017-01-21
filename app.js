@@ -3,6 +3,7 @@ var express = require('express');
 var url = require('url');
 var app = express();
 var weather = require('weather-js');
+var axios = require('axios');
 
 
 // TODO: Create bot that uses omdb to look up a movie
@@ -17,44 +18,63 @@ app.get('/', function (request, response) {
 
     var urlObject = url.parse(request.url, true).query
     console.log(urlObject);
-    testWeather(urlObject);
-    // sendMessage(urlObject);
-
-
+    sendMessage(urlObject);
 
 });
 
 
-function testWeather(urlObject) {
-    weather.find({search: 'Austin, TX', degreeType: 'F'}, function (err, result) {
-        if(err) console.log(err);
-        console.log(result);
-        console.log(result[0].location.name);
-        console.log(result[0].location.current.temperature);
-        var locationName = result[0].location.name;
-        var temp = result[0].location.current.temperature;
-        sendMessage(urlObject, locationName, temp);
-    });
-}
+
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
 // ===============Original FUNCTION ===========
-function sendMessage(urlObject, data, temp) {
+function sendMessage(urlObject) {
 
     slack = new Slack();
     slack.setWebhook(urlObject.response_url);
 
     //This splits up the user input so you can handle multiple words
     var userText = urlObject.text.split(" ");
-    // //This will be the command to direct what the output will be
-    // var userCommand = userText[0];
-    // //This will be the second user command and will be the input that is evaluated
-    // var userInput = userText[1];
+    //This will be the command to direct what the output will be
+    var userCommand = userText[0];
+    //This will be the second user command and will be the input that is evaluated
+    var userInput = userText[1];
 
+    var responseText = "";
+
+    switch(userCommand.toLowerCase()){
+        case "help":
+
+            slack.webhook({
+                channel: urlObject.channel_name,
+
+                text: "You can type the following commands:\n `movie` and your `MOVIENAME` and this will return your movie information\n or `quote` and then a `genre` and it will return a quote"
+            }, function (err, response) {
+                if (err) {
+                    console.log(err)
+                }
+            });
+            break;
+        // case "movie":
+        //     //use axios to perform a movie search on the omdb database
+        //     slack.webhook({
+        //         channel: urlObject.channel_name,
+        //
+        //         text:
+        //     }, function (err, response) {
+        //         if (err) {
+        //             console.log(err)
+        //         }
+        //     });
+        //     break;
+        // case "quote"
+        //     break;
+        default:
+            responseText = "Sorry unrecognized command, type `/nigel help` for a list of commands"
+    }
 
     slack.webhook({
         channel: urlObject.channel_name,
 
-        text: "You typed: " + userText + "And your location is: " +  data  + "and it is currently " + temp + " degrees"            // the response back to slack
+        text: responseText
     }, function (err, response) {
         if (err) {
             console.log(err)
