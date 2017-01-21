@@ -7,7 +7,9 @@ var axios = require('axios');
 var unirest = require('unirest');
 
 
-// TODO: Create bot that uses omdb to look up a movie
+/*
+This BOT allows you to ask it for help and you can look up movies from the OMDB database and you can also get inspirational/famous quotes
+ */
 
 ////////////// THE SETUP ///////////////////////////////////////////
 
@@ -47,27 +49,30 @@ function sendMessage(urlObject) {
             slack.webhook({
                 channel: urlObject.channel_name,
 
-                text: "You can type the following commands:\n 1. `movie` and your `MOVIENAME` like `/nigel movie sandlot` and this will return your movie information\n or; 2. `quote` and then a `genre` like `/nigel quote movies` and it will return a quote"
+                text: "You can type the following commands:\n 1. `movie` and your `MOVIENAME` like `/nigel movie sandlot` and this will return your movie information or; \n2. `quote` and then a `genre` like `/nigel quote movies` and it will return a quote"
             }, function (err, response) {
                 if (err) {
                     console.log(err)
                 }
             });
             break;
-        // case "movie":
-        //     //use axios to perform a movie search on the omdb database
-        //
-        //     axios.get
-        //     slack.webhook({
-        //         channel: urlObject.channel_name,
-        //
-        //         text:
-        //     }, function (err, response) {
-        //         if (err) {
-        //             console.log(err)
-        //         }
-        //     });
-        //     break;
+        case "movie":
+            //use axios to perform a movie search on the imdb database
+            var queryURL = "http://imdb.wemakesites.net/api/search?q="+userInput+"&api_key=909eddb2-f52d-475e-892c-4020a43d002e";
+            axios.get(queryURL).then(function (response) {
+                slack.webhook({
+                    channel: urlObject.channel_name,
+
+                    text: response.term
+                }, function (err, response) {
+                    if (err) {
+                        console.log(err)
+                    }
+                });
+
+            })
+
+            break;
         case "quote":
 
 
@@ -109,69 +114,3 @@ function sendMessage(urlObject) {
     });
 }
 
-
-
-//======= CHANCE APPP =======
-
-
-/////////////// THE SEND MESSAGE //////////////////////////////////////////
-
-    // function chuckNorris(urlObject){
-    //
-    //     const slack = new Slack();
-    //     slack.setWebhook(urlObject.response_url);
-    //
-    //     //   /mySlashCommand catfish    'catfish' is stored in const userCommand
-    //     request('http://api.icndb.com/jokes/random?firstName=Chuck&lastName=Norris', function (error, resp, body) {
-    //         const joke = JSON.parse(body);
-    //
-    //
-    //         slack.webhook({
-    //             channel: urlObject.channel_name,
-    //             text: joke.value.joke
-    //         }, function(err, resp) {
-    //             if (err){
-    //                 console.log(err)
-    //             }
-    //         })//webhook
-    //     })
-    // }
-    //
-
-    //======== END CHANCE APPP ========
-
-//====== MIKE APPP ===========
-
-
-/////////////// THE SEND MESSAGE //////////////////////////////////////////
-//     function sendVideo(urlObject) {
-//         var query = urlObject.text;
-//
-//         request('https://www.googleapis.com/youtube/v3/search?part=snippet&q='+ query +'&type=video&key=AIzaSyAPF280wWDUXe8i6RdW8gQ3_RnQMOP4BXk', function(error, response, body) {
-//             if (!error && response.statusCode == 200) {
-//                 console.log("Response: ", response.body.type)
-//                 var object = JSON.parse(response.body);
-//                 var baseURL = 'https://www.youtube.com/watch?v=';
-//                 var videoURL = baseURL + object.items[0].id.videoId
-//
-//                 slack = new Slack();
-//                 slack.setWebhook(urlObject.response_url);
-//
-//                 slack.webhook({
-//                     channel: urlObject.channel_name,
-//
-//                     text: videoURL
-//                     attachment: {
-//                         title_link: videoURL
-//                     }
-//
-//                 }, function(err, response) {
-//                     if (err) {
-//                         console.log(err)
-//                     }
-//                 });
-//             }
-//         })
-//     }
-
- //END
