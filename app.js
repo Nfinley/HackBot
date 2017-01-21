@@ -23,13 +23,12 @@ app.get('/', function(request, response) {
     var urlObject = url.parse(request.url,true).query
     console.log(urlObject)
     sendMessage(urlObject);
-    getWeather(urlObject);
 
 }); //app.get
 
 // TODO: Add Weather and Location
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
-
+//===============Original FUNCTION ===========
 function sendMessage(urlObject){
 
     slack = new Slack();
@@ -42,8 +41,6 @@ function sendMessage(urlObject){
      channel: urlObject.channel_name,
 
       text: "hi there, your fingers typed: " + userText  + " " + userText.length                 // the response back to slack
-      text: "Would you like to see the weather?"
-      getWeather(urlObject);
     }, function(err, response) {
         if (err){
             console.log(err)
@@ -66,7 +63,7 @@ function getWeather(urlObject){
 
     } else {
             text: "To see your weather please type 'My Weather' "
-    }
+    };
 
 
     }, function(err, response) {
