@@ -38,9 +38,10 @@ function sendMessage(urlObject){
     var userText = urlObject.text;
 
     slack.webhook({
-     channel: urlObject.channel_name,
+        channel: urlObject.channel_name,
 
-      text: "hi there, your fingers typed: " + userText  + " " + userText.length                 // the response back to slack
+        text: "you typed: " + userText                  // the response back to slack
+
     }, function(err, response) {
         if (err){
             console.log(err)
