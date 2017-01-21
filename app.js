@@ -33,7 +33,7 @@ function testWeather(urlObject) {
         console.log(result[0].location.current.temperature);
         var locationName = result[0].location.name;
         var temp = result[0].location.current.temperature;
-        // sendMessage(urlObject, locationName, temp);
+        sendMessage(urlObject, locationName, temp);
     });
 }
 ///////////// THE SEND MESSAGE //////////////////////////////////////////
